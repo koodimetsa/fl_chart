@@ -699,6 +699,7 @@ class BarTouchTooltipData with EquatableMixin {
   /// also you can set [fitInsideVertically] true to force it to shift inside the chart vertically.
   BarTouchTooltipData({
     Color? tooltipBgColor,
+    Color? tooltipArrowColor,
     double? tooltipRoundedRadius,
     EdgeInsets? tooltipPadding,
     double? tooltipMargin,
@@ -712,6 +713,7 @@ class BarTouchTooltipData with EquatableMixin {
     double? rotateAngle,
     BorderSide? tooltipBorder,
   })  : tooltipBgColor = tooltipBgColor ?? Colors.blueGrey.darken(15),
+        tooltipArrowColor = tooltipArrowColor ?? Colors.blueGrey.darken(15),
         tooltipRoundedRadius = tooltipRoundedRadius ?? 4,
         tooltipPadding = tooltipPadding ??
             const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -730,6 +732,8 @@ class BarTouchTooltipData with EquatableMixin {
 
   /// The tooltip background color.
   final Color tooltipBgColor;
+
+  final Color tooltipArrowColor;
 
   /// Sets a rounded radius for the tooltip.
   final double tooltipRoundedRadius;
