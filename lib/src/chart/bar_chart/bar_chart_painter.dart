@@ -639,7 +639,7 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         final barWidth = targetData.barGroups[i].barRods[j].width;
         final halfBarWidth = barWidth / 2;
 
-/*         double barTopY;
+        double barTopY;
         double barBotY;
 
         final isUpward = targetData.barGroups[i].barRods[j].isUpward();
@@ -667,20 +667,20 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
             viewSize,
             holder,
           );
-        } */
+        }
 
-        /*   final backDrawBarY = getPixelY(
+        final backDrawBarY = getPixelY(
           targetData.barGroups[i].barRods[j].backDrawRodData.toY,
           viewSize,
           holder,
-        ); */
+        );
         final touchExtraThreshold = targetData.barTouchData.touchExtraThreshold;
 
         final isXInTouchBounds = (touchedPoint.dx <=
                 barX + halfBarWidth + touchExtraThreshold.right) &&
             (touchedPoint.dx >= barX - halfBarWidth - touchExtraThreshold.left);
 
-        /*     bool isYInBarBounds;
+        bool isYInBarBounds;
         if (isUpward) {
           isYInBarBounds =
               (touchedPoint.dy <= barBotY + touchExtraThreshold.bottom) &&
@@ -702,12 +702,13 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
               (touchedPoint.dy <= backDrawBarY + touchExtraThreshold.bottom);
         }
 
-        final isYInTouchBounds =
-            (targetData.barTouchData.allowTouchBarBackDraw &&
-                    isYInBarBackDrawBounds) ||
-                isYInBarBounds; */
+        var isYInTouchBounds = (targetData.barTouchData.allowTouchBarBackDraw &&
+                isYInBarBackDrawBounds) ||
+            isYInBarBounds;
 
-        if (isXInTouchBounds /* && isYInTouchBounds */) {
+        isYInTouchBounds = true;
+
+        if (isXInTouchBounds && isYInTouchBounds) {
           final nearestGroup = targetData.barGroups[i];
           final nearestBarRod = nearestGroup.barRods[j];
           final nearestSpot =
