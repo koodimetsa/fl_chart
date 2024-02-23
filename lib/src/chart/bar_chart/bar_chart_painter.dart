@@ -2,6 +2,7 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart/src/chart/bar_chart/bar_chart_painter_custom.dart';
 import 'package:fl_chart/src/chart/base/axis_chart/axis_chart_painter.dart';
 import 'package:fl_chart/src/chart/base/base_chart/base_chart_painter.dart';
 import 'package:fl_chart/src/extensions/bar_chart_data_extension.dart';
@@ -499,38 +500,12 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         ..strokeWidth = tooltipData.tooltipBorder.width;
     }
 
-    const positionWidth = 8.0;
-    const arrowHeight = 3.0;
-    final startLeft = tooltipLeft + (tooltipWidth / 2 - positionWidth / 2);
-
-    final tooptipPositionRect = Rect.fromLTWH(
-      startLeft,
-      rect.bottom - 2,
-      positionWidth,
-      tooltipData.tooltipMargin - 4 - arrowHeight,
+    final ttPathAndPosition = barTooltipArrowPathAndPosition(
+      tooltipLeft: tooltipLeft,
+      tooltipWidth: tooltipWidth,
+      rect: rect,
+      tooltipData: tooltipData,
     );
-
-    final tooltipPositionPath = Path()
-      ..addRect(tooptipPositionRect)
-      ..moveTo(startLeft, tooptipPositionRect.bottom)
-      ..lineTo(startLeft + positionWidth / 2,
-          tooptipPositionRect.bottom + arrowHeight)
-      ..lineTo(startLeft + positionWidth, tooptipPositionRect.bottom)
-      ..close();
-
-    final gradient = LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        tooltipData.tooltipBgColor,
-        tooltipData.tooltipArrowColor,
-      ],
-    );
-
-    final tooltipPositionPaint = Paint()
-      ..style = PaintingStyle.fill
-      ..shader = gradient.createShader(tooltipPositionPath.getBounds());
-    //..color = tooltipData.tooltipBgColor;
 
     canvasWrapper.drawRotated(
       size: rect.size,
@@ -541,7 +516,7 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         canvasWrapper
           ..drawRRect(roundedRect, _bgTouchTooltipPaint)
           ..drawRRect(roundedRect, _borderTouchTooltipPaint)
-          ..drawPath(tooltipPositionPath, tooltipPositionPaint)
+          ..drawPath(ttPathAndPosition.path, ttPathAndPosition.paint)
           ..drawText(tp, drawOffset);
       },
     );
