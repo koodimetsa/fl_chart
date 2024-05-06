@@ -500,6 +500,8 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         ..strokeWidth = tooltipData.tooltipBorder.width;
     }
 
+    tooltipData.tooltipItemDrawn?.call(rect);
+
     final ttPathAndPosition = barTooltipArrowPathAndPosition(
       tooltipLeft: tooltipLeft,
       tooltipWidth: tooltipWidth,
