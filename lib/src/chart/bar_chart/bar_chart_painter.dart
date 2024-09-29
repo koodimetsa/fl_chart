@@ -509,6 +509,7 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
       tooltipWidth: tooltipWidth,
       rect: rect,
       tooltipData: tooltipData,
+      showOnBarGroup: showOnBarGroup,
     );
 
     canvasWrapper.drawRotated(

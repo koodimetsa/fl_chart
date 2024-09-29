@@ -1,12 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-({Path path, Paint paint}) barTooltipArrowPathAndPosition({
-  required double tooltipLeft,
-  required double tooltipWidth,
-  required Rect rect,
-  required BarTouchTooltipData tooltipData,
-}) {
+({Path path, Paint paint}) barTooltipArrowPathAndPosition(
+    {required double tooltipLeft,
+    required double tooltipWidth,
+    required Rect rect,
+    required BarTouchTooltipData tooltipData,
+    required BarChartGroupData showOnBarGroup}) {
   const positionWidth = 8.0;
   const arrowHeight = 3.0;
   final startLeft = tooltipLeft + (tooltipWidth / 2 - positionWidth / 2);
@@ -30,7 +30,7 @@ import 'package:flutter/material.dart';
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      tooltipData.tooltipBgColor,
+      tooltipData.getTooltipColor(showOnBarGroup),
       tooltipData.tooltipArrowColor,
     ],
   );
