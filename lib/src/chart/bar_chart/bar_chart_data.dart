@@ -212,6 +212,9 @@ class BarChartGroupData with EquatableMixin {
   /// you can show some tooltipIndicators (a popup with an information)
   /// on top of each [BarChartRodData] using [showingTooltipIndicators],
   /// just put indices you want to show it on top of them.
+  ///
+  /// An important point is that you have to disable the default touch behaviour
+  /// to show the tooltip manually, see [BarTouchData.handleBuiltInTouches].
   final List<int> showingTooltipIndicators;
 
   /// width of the group (sum of all [BarChartRodData]'s width and spaces)
@@ -299,7 +302,7 @@ class BarChartRodData with EquatableMixin {
   /// If you are a fan of stacked charts (If you don't know what is it, google it),
   /// you can fill up the [rodStackItems] to have a Stacked Chart.
   /// for example if you want to have a Stacked Chart with three colors:
-  /// ```
+  /// ```dart
   /// BarChartRodData(
   ///   y: 9,
   ///   color: Colors.grey,
@@ -443,7 +446,7 @@ class BarChartRodData with EquatableMixin {
 class BarChartRodStackItem with EquatableMixin {
   /// Renders a section of Stacked Chart from [fromY] to [toY] with [color]
   /// for example if you want to have a Stacked Chart with three colors:
-  /// ```
+  /// ```dart
   /// BarChartRodData(
   ///   y: 9,
   ///   color: Colors.grey,
@@ -687,7 +690,7 @@ class BarTouchTooltipData with EquatableMixin {
   /// if [BarTouchData.handleBuiltInTouches] is true,
   /// [BarChart] shows a tooltip popup on top of rods automatically when touch happens,
   /// otherwise you can show it manually using [BarChartGroupData.showingTooltipIndicators].
-  /// Tooltip shows on top of rods, with [tooltipBgColor] as a background color,
+  /// Tooltip shows on top of rods, with [getTooltipColor] as a background color,
   /// and you can set corner radius using [tooltipRoundedRadius].
   /// If you want to have a padding inside the tooltip, fill [tooltipPadding],
   /// or If you want to have a bottom margin, set [tooltipMargin].
@@ -707,6 +710,7 @@ class BarTouchTooltipData with EquatableMixin {
     double? tooltipHorizontalOffset,
     double? maxContentWidth,
     GetBarTooltipItem? getTooltipItem,
+    GetBarTooltipColor? getTooltipColor,
     bool? fitInsideHorizontally,
     bool? fitInsideVertically,
     TooltipDirection? direction,
@@ -724,6 +728,7 @@ class BarTouchTooltipData with EquatableMixin {
         tooltipHorizontalOffset = tooltipHorizontalOffset ?? 0,
         maxContentWidth = maxContentWidth ?? 120,
         getTooltipItem = getTooltipItem ?? defaultBarTooltipItem,
+        getTooltipColor = getTooltipColor ?? defaultBarTooltipColor,
         fitInsideHorizontally = fitInsideHorizontally ?? false,
         fitInsideVertically = fitInsideVertically ?? false,
         direction = direction ?? TooltipDirection.auto,
@@ -774,10 +779,12 @@ class BarTouchTooltipData with EquatableMixin {
   /// The tooltip border color.
   final BorderSide tooltipBorder;
 
+  /// Retrieves data for setting background color of the tooltip.
+  final GetBarTooltipColor getTooltipColor;
+
   /// Used for equality check, see [EquatableMixin].
   @override
   List<Object?> get props => [
-        tooltipBgColor,
         tooltipRoundedRadius,
         tooltipPadding,
         tooltipMargin,
@@ -789,6 +796,7 @@ class BarTouchTooltipData with EquatableMixin {
         fitInsideVertically,
         rotateAngle,
         tooltipBorder,
+        getTooltipColor,
       ];
 }
 
@@ -856,6 +864,20 @@ class BarTooltipItem with EquatableMixin {
         textDirection,
         children,
       ];
+}
+
+//// Provides a [Color] to show different background color for each rod
+///
+/// You can override [BarTouchTooltipData.getTooltipColor], it gives you
+/// [group] that touch happened on, then you should and pass your custom [Color] to set background color
+/// of tooltip popup.
+typedef GetBarTooltipColor = Color Function(
+  BarChartGroupData group,
+);
+
+/// Default implementation for [BarTouchTooltipData.getTooltipColor].
+Color defaultBarTooltipColor(BarChartGroupData group) {
+  return Colors.blueGrey.darken(15);
 }
 
 /// Holds information about touch response in the [BarChart].

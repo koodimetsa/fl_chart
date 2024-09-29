@@ -1,6 +1,4 @@
-# PieChart
-
-<img src="https://github.com/imaNNeo/fl_chart/raw/main/repo_files/images/pie_chart/pie_chart.jpg" width="300" >
+<a href="https://www.youtube.com/watch?v=VlXC-RAaX4Y&list=PL1-_rCwRcnbNpvodmbt43O81wMUdBv8-a"><img src="https://github.com/imaNNeo/fl_chart/raw/main/repo_files/images/pie_chart/pie_chart_video_thumbnail.png" width=540></a>
 
 ### How to use
 ```dart
@@ -29,6 +27,7 @@ When you change the chart's state, it animates to the new state internally (usin
 |startDegreeOffset| degree offset of the sections around the pie chart, should be between 0 and 360|0|
 |pieTouchData| [PieTouchData](#pietouchdata-read-about-touch-handling) holds the touch interactivity details| PieTouchData()|
 |borderData| shows a border around the chart, check the [FlBorderData](base_chart.md#FlBorderData)|FlBorderData()|
+|titleSunbeamLayout| whether to rotate the titles on each section of the chart|false|
 
 
 ### PieChartSectionData
