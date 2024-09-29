@@ -701,7 +701,6 @@ class BarTouchTooltipData with EquatableMixin {
   /// you can set [fitInsideHorizontally] true to force it to shift inside the chart horizontally,
   /// also you can set [fitInsideVertically] true to force it to shift inside the chart vertically.
   BarTouchTooltipData({
-    Color? tooltipBgColor,
     Color? tooltipArrowColor,
     double? tooltipRoundedRadius,
     EdgeInsets? tooltipPadding,
@@ -717,8 +716,7 @@ class BarTouchTooltipData with EquatableMixin {
     double? rotateAngle,
     BorderSide? tooltipBorder,
     this.tooltipItemDrawn,
-  })  : tooltipBgColor = tooltipBgColor ?? Colors.blueGrey.darken(15),
-        tooltipArrowColor = tooltipArrowColor ?? Colors.blueGrey.darken(15),
+  })  : tooltipArrowColor = tooltipArrowColor ?? Colors.blueGrey.darken(15),
         tooltipRoundedRadius = tooltipRoundedRadius ?? 4,
         tooltipPadding = tooltipPadding ??
             const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -735,9 +733,6 @@ class BarTouchTooltipData with EquatableMixin {
         rotateAngle = rotateAngle ?? 0.0,
         tooltipBorder = tooltipBorder ?? BorderSide.none,
         super();
-
-  /// The tooltip background color.
-  final Color tooltipBgColor;
 
   final Color tooltipArrowColor;
 
