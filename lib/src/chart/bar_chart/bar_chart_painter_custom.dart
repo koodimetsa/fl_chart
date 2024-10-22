@@ -1,12 +1,13 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-({Path path, Paint paint}) barTooltipArrowPathAndPosition(
-    {required double tooltipLeft,
-    required double tooltipWidth,
-    required Rect rect,
-    required BarTouchTooltipData tooltipData,
-    required BarChartGroupData showOnBarGroup}) {
+({Path path, Paint paint}) barTooltipArrowPathAndPosition({
+  required double tooltipLeft,
+  required double tooltipWidth,
+  required Rect rect,
+  required BarTouchTooltipData tooltipData,
+  required BarChartGroupData showOnBarGroup,
+}) {
   const positionWidth = 8.0;
   const arrowHeight = 3.0;
   final startLeft = tooltipLeft + (tooltipWidth / 2 - positionWidth / 2);
@@ -22,7 +23,9 @@ import 'package:flutter/material.dart';
     ..addRect(tooptipPositionRect)
     ..moveTo(startLeft, tooptipPositionRect.bottom)
     ..lineTo(
-        startLeft + positionWidth / 2, tooptipPositionRect.bottom + arrowHeight)
+      startLeft + positionWidth / 2,
+      tooptipPositionRect.bottom + arrowHeight,
+    )
     ..lineTo(startLeft + positionWidth, tooptipPositionRect.bottom)
     ..close();
 
