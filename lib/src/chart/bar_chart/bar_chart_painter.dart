@@ -502,8 +502,6 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         ..strokeWidth = tooltipData.tooltipBorder.width;
     }
 
-    tooltipData.tooltipItemDrawn?.call(rect);
-
     final ttPathAndPosition = barTooltipArrowPathAndPosition(
       tooltipLeft: tooltipLeft,
       tooltipWidth: tooltipWidth,
@@ -511,6 +509,17 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
       tooltipData: tooltipData,
       showOnBarGroup: showOnBarGroup,
     );
+
+    tooltipData.tooltipItemDrawn?.call(
+      rect: rect,
+      arrowPath: ttPathAndPosition.path,
+      arrowPaint: ttPathAndPosition.paint,
+    );
+
+    if (tooltipData.useTooltipCustomDraw) {
+      //when custompainting elsewhere, no need to draw here
+      return;
+    }
 
     canvasWrapper.drawRotated(
       size: rect.size,
