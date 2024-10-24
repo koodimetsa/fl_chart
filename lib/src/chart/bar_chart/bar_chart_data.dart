@@ -715,7 +715,6 @@ class BarTouchTooltipData with EquatableMixin {
     TooltipDirection? direction,
     double? rotateAngle,
     BorderSide? tooltipBorder,
-    bool? useTooltipCustomDraw,
     this.tooltipItemDrawn,
   })  : tooltipArrowColor = tooltipArrowColor ?? Colors.blueGrey.darken(15),
         tooltipRoundedRadius = tooltipRoundedRadius ?? 4,
@@ -733,15 +732,12 @@ class BarTouchTooltipData with EquatableMixin {
         direction = direction ?? TooltipDirection.auto,
         rotateAngle = rotateAngle ?? 0.0,
         tooltipBorder = tooltipBorder ?? BorderSide.none,
-        useTooltipCustomDraw = useTooltipCustomDraw ?? false,
         super();
 
   final Color tooltipArrowColor;
 
   final void Function({Rect rect, Path arrowPath, Paint arrowPaint})?
       tooltipItemDrawn;
-
-  final bool useTooltipCustomDraw;
 
   /// Sets a rounded radius for the tooltip.
   final double tooltipRoundedRadius;

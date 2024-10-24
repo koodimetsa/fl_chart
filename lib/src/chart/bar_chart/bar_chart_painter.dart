@@ -516,11 +516,6 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
       arrowPaint: ttPathAndPosition.paint,
     );
 
-    if (tooltipData.useTooltipCustomDraw) {
-      //when custompainting elsewhere, no need to draw here
-      return;
-    }
-
     canvasWrapper.drawRotated(
       size: rect.size,
       rotationOffset: rectRotationOffset,
