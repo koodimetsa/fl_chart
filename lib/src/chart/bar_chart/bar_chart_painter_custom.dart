@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 
   final tooptipPositionRect = Rect.fromLTWH(
     startLeft,
-    rect.bottom - 2,
+    rect.bottom + tooltipData.borderSizeForArrow,
     positionWidth,
     tooltipData.tooltipMargin - 4 - arrowHeight,
   );
