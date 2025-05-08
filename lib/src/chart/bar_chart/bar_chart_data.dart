@@ -739,6 +739,7 @@ class BarTouchTooltipData with EquatableMixin {
     TooltipDirection? direction,
     double? rotateAngle,
     BorderSide? tooltipBorder,
+    this.tooltipItemDrawn,
   })  : tooltipArrowColor = tooltipArrowColor ?? Colors.blueGrey.darken(15),
         borderSizeForArrow = borderSizeForArrow ?? 0,
         tooltipRoundedRadius = tooltipRoundedRadius ?? 4,
