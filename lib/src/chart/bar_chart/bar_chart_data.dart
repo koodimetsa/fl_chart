@@ -52,7 +52,7 @@ class BarChartData extends AxisChartData with EquatableMixin {
   })  : barGroups = barGroups ?? const [],
         groupsSpace = groupsSpace ?? 16,
         alignment = alignment ?? BarChartAlignment.spaceEvenly,
-        barTouchData = barTouchData ?? const BarTouchData(),
+        barTouchData = barTouchData ?? BarTouchData(),
         super(
           titlesData: titlesData ??
               const FlTitlesData(
@@ -624,7 +624,7 @@ class BarTouchData extends FlTouchData<BarTouchResponse> with EquatableMixin {
   /// If you need to have a distance threshold for handling touches, use [touchExtraThreshold].
   /// If [allowTouchBarBackDraw] sets to true, touches will work
   /// on [BarChartRodData.backDrawRodData] too (by default it only works on the main rods).
-  const BarTouchData({
+  BarTouchData({
     bool? enabled,
     BaseTouchCallback<BarTouchResponse>? touchCallback,
     MouseCursorResolver<BarTouchResponse>? mouseCursorResolver,
@@ -633,7 +633,7 @@ class BarTouchData extends FlTouchData<BarTouchResponse> with EquatableMixin {
     EdgeInsets? touchExtraThreshold,
     bool? allowTouchBarBackDraw,
     bool? handleBuiltInTouches,
-  })  : touchTooltipData = touchTooltipData ?? const BarTouchTooltipData(),
+  })  : touchTooltipData = touchTooltipData ?? BarTouchTooltipData(),
         touchExtraThreshold = touchExtraThreshold ?? const EdgeInsets.all(4),
         allowTouchBarBackDraw = allowTouchBarBackDraw ?? false,
         handleBuiltInTouches = handleBuiltInTouches ?? true,
@@ -764,6 +764,8 @@ class BarTouchTooltipData with EquatableMixin {
 
   final void Function({Rect rect, Path arrowPath, Paint arrowPaint})?
       tooltipItemDrawn;
+
+  final double tooltipRoundedRadius;
 
   /// Sets a rounded radius for the tooltip.
   final BorderRadius? _tooltipBorderRadius;
