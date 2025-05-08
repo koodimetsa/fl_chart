@@ -54,6 +54,7 @@ void main() {
                   2,
                   2,
                   show: false,
+                  renderPriority: 10,
                   dotPainter: FlDotCirclePainter(
                     radius: 11,
                     color: Colors.purple,
@@ -63,6 +64,7 @@ void main() {
                   1,
                   2,
                   show: false,
+                  renderPriority: -1,
                   dotPainter: FlDotCirclePainter(
                     radius: 11,
                     color: Colors.white,
@@ -80,6 +82,7 @@ void main() {
                   2,
                   2,
                   show: false,
+                  renderPriority: 10,
                   dotPainter: FlDotCirclePainter(
                     radius: 11,
                     color: Colors.purple,
@@ -89,6 +92,7 @@ void main() {
                   0,
                   0,
                   show: false,
+                  renderPriority: 0,
                   dotPainter: FlDotCirclePainter(
                     radius: 33,
                     color: Colors.yellow,
@@ -98,6 +102,7 @@ void main() {
                   1,
                   2,
                   show: false,
+                  renderPriority: -1,
                   dotPainter: FlDotCirclePainter(
                     radius: 11,
                     color: Colors.white,
@@ -384,20 +389,20 @@ void main() {
 
     test('ScatterTouchData equality test', () {
       final sample = ScatterTouchData(
-        touchTooltipData: ScatterTouchTooltipData(
+        touchTooltipData: const ScatterTouchTooltipData(
           maxContentWidth: 2,
           getTooltipColor: scatterChartGetTooltipRedColor,
-          tooltipPadding: const EdgeInsets.all(11),
+          tooltipPadding: EdgeInsets.all(11),
         ),
         handleBuiltInTouches: false,
         touchSpotThreshold: 23,
         enabled: false,
       );
       final sampleClone = ScatterTouchData(
-        touchTooltipData: ScatterTouchTooltipData(
+        touchTooltipData: const ScatterTouchTooltipData(
           maxContentWidth: 2,
           getTooltipColor: scatterChartGetTooltipRedColor,
-          tooltipPadding: const EdgeInsets.all(11),
+          tooltipPadding: EdgeInsets.all(11),
         ),
         handleBuiltInTouches: false,
         touchSpotThreshold: 23,

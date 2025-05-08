@@ -34,6 +34,8 @@ When you change the chart's state, it animates to the new state internally (usin
 |baselineY| defines the baseline of y-axis | 0|
 |clipData| clip the chart to the border (prevent drawing outside the border) | FlClipData.none()|
 |backgroundColor| a background color which is drawn behind th chart| null |
+|rotationQuarterTurns|Rotates the chart 90 degrees (clockwise) in every quarter turns. This feature works like the [RotatedBox](https://api.flutter.dev/flutter/widgets/RotatedBox-class.html) widget|0|
+
 
 
 ### LineChartBarData
@@ -58,6 +60,7 @@ When you change the chart's state, it animates to the new state internally (usin
 |shadow|It drops a shadow behind your bar, see [Shadow](https://api.flutter.dev/flutter/dart-ui/Shadow-class.html).|Shadow()|
 |isStepLineChart|If sets true, it draws the chart in Step Line Chart style, using `lineChartStepData`.|false|
 |lineChartStepData|Holds data for representing a Step Line Chart, and works only if [isStepChart] is true.|[LineChartStepData](#LineChartStepData)()|
+|errorIndicatorData|Holds data for representing an error indicator (you see the error indicators if you provide the `xError` or `yError` in the [FlSpot](base_chart.md#FlSpot)).|[ErrorIndicatorData()](base_chart.md#FlErrorIndicatorData)|
 
 ### LineChartStepData
 |PropName|Description|default value|
@@ -118,7 +121,7 @@ When you change the chart's state, it animates to the new state internally (usin
  |PropName|Description|default value|
  |:-------|:----------|:------------|
  |tooltipBorder|border of the tooltip bubble|BorderSide.none|
- |tooltipRoundedRadius|background corner radius of the tooltip bubble|4|
+ |tooltipBorderRadius|background corner radius of the tooltip bubble|BorderRadius.circular(4)|
  |tooltipPadding|padding of the tooltip|EdgeInsets.symmetric(horizontal: 16, vertical: 8)|
  |tooltipMargin|margin between the tooltip and the touched spot|16|
  |tooltipHorizontalAlignment|horizontal alginment of tooltip relative to the spot|FLHorizontalAlignment.center|
@@ -135,7 +138,7 @@ When you change the chart's state, it animates to the new state internally (usin
 |:-------|:----------|:------------|
 |text|text string of each row in the tooltip bubble|null|
 |textStyle|[TextStyle](https://api.flutter.dev/flutter/dart-ui/TextStyle-class.html) of the showing text row|null|
-|textAlign|[TextStyle](https://api.flutter.dev/flutter/dart-ui/TextAlign-class.html) of the showing text row|TextAlign.center|
+|textAlign|[TextAlign](https://api.flutter.dev/flutter/dart-ui/TextAlign-class.html) of the showing text row|TextAlign.center|
 |textDirection|[TextDirection](https://api.flutter.dev/flutter/dart-ui/TextDirection-class.html) of the showing text row|TextDirection.ltr|
 |children|[List<TextSpan>](https://api.flutter.dev/flutter/painting/InlineSpan-class.html) pass additional InlineSpan children for a more advance tooltip|null|
 
@@ -166,6 +169,8 @@ When you change the chart's state, it animates to the new state internally (usin
 ### LineTouchResponse
 |PropName|Description|default value|
 |:-------|:----------|:------------|
+|touchLocation|the location of the touch event in the device pixels coordinates|required|
+|touchChartCoordinate|the location of the touch event in the chart coordinates|required|
 |lineBarSpots|a list of [TouchLineBarSpot](#TouchLineBarSpot)|null|
 
 ### ShowingTooltipIndicators

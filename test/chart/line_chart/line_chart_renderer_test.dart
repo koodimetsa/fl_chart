@@ -48,6 +48,8 @@ void main() {
       data,
       targetData,
       textScaler,
+      null,
+      canBeScaled: false,
     );
 
     final mockPainter = MockLineChartPainter();
@@ -99,12 +101,15 @@ void main() {
         });
         return MockData.lineTouchResponse1.lineBarSpots;
       });
+      when(mockPainter.getChartCoordinateFromPixel(any, any, any))
+          .thenAnswer((_) => const Offset(10, 10));
       final touchResponse =
           renderLineChart.getResponseAtLocation(MockData.offset1);
       expect(
         touchResponse.lineBarSpots,
         MockData.lineTouchResponse1.lineBarSpots,
       );
+      expect(touchResponse.touchChartCoordinate, const Offset(10, 10));
       expect(results[0]['local_position'] as Offset, MockData.offset1);
       expect(results[0]['size'] as Size, mockSize);
       final paintHolder = results[0]['paint_holder'] as PaintHolder;
@@ -122,6 +127,43 @@ void main() {
       expect(renderLineChart.data, targetData);
       expect(renderLineChart.targetData, data);
       expect(renderLineChart.textScaler, const TextScaler.linear(22));
+    });
+
+    test('passes chart virtual rect to paint holder', () {
+      final rect1 = Offset.zero & const Size(100, 100);
+      final renderLineChart = RenderLineChart(
+        mockBuildContext,
+        data,
+        targetData,
+        textScaler,
+        null,
+        canBeScaled: false,
+      );
+
+      expect(renderLineChart.chartVirtualRect, isNull);
+      expect(renderLineChart.paintHolder.chartVirtualRect, isNull);
+
+      renderLineChart.chartVirtualRect = rect1;
+
+      expect(renderLineChart.chartVirtualRect, rect1);
+      expect(renderLineChart.paintHolder.chartVirtualRect, rect1);
+    });
+
+    test('uses canBeScaled', () {
+      final renderLineChart = RenderLineChart(
+        mockBuildContext,
+        data,
+        targetData,
+        textScaler,
+        null,
+        canBeScaled: false,
+      );
+
+      expect(renderLineChart.canBeScaled, false);
+
+      renderLineChart.canBeScaled = true;
+
+      expect(renderLineChart.canBeScaled, true);
     });
   });
 }

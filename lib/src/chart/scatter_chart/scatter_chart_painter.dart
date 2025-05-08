@@ -24,10 +24,13 @@ class ScatterChartPainter extends AxisChartPainter<ScatterChartData> {
       ..style = PaintingStyle.stroke
       ..color = Colors.transparent
       ..strokeWidth = 1.0;
+
+    _clipPaint = Paint();
   }
 
   late Paint _bgTouchTooltipPaint;
   late Paint _borderTouchTooltipPaint;
+  late Paint _clipPaint;
 
   /// Paints [ScatterChartData] into the provided canvas.
   @override
@@ -36,8 +39,21 @@ class ScatterChartPainter extends AxisChartPainter<ScatterChartData> {
     CanvasWrapper canvasWrapper,
     PaintHolder<ScatterChartData> holder,
   ) {
+    if (holder.chartVirtualRect != null) {
+      canvasWrapper
+        ..saveLayer(
+          Offset.zero & canvasWrapper.size,
+          _clipPaint,
+        )
+        ..clipRect(Offset.zero & canvasWrapper.size);
+    }
     super.paint(context, canvasWrapper, holder);
     drawSpots(context, canvasWrapper, holder);
+
+    if (holder.chartVirtualRect != null) {
+      canvasWrapper.restore();
+    }
+
     drawTouchTooltips(context, canvasWrapper, holder);
   }
 
@@ -60,7 +76,7 @@ class ScatterChartPainter extends AxisChartPainter<ScatterChartData> {
           canvasWrapper.size.width,
           canvasWrapper.size.height,
         ),
-        Paint(),
+        _clipPaint,
       );
 
       var left = 0.0;
@@ -101,6 +117,8 @@ class ScatterChartPainter extends AxisChartPainter<ScatterChartData> {
         Offset(pixelX, pixelY),
       );
     }
+
+    drawScatterErrorBars(canvasWrapper, holder);
 
     if (data.scatterLabelSettings.showLabel) {
       for (var i = 0; i < data.scatterSpots.length; i++) {
@@ -176,6 +194,65 @@ class ScatterChartPainter extends AxisChartPainter<ScatterChartData> {
   }
 
   @visibleForTesting
+  void drawScatterErrorBars(
+    CanvasWrapper canvasWrapper,
+    PaintHolder<ScatterChartData> holder,
+  ) {
+    final data = holder.data;
+    final viewSize = canvasWrapper.size;
+
+    final errorIndicatorData = data.errorIndicatorData;
+    if (!errorIndicatorData.show) {
+      return;
+    }
+    for (var i = 0; i < data.scatterSpots.length; i++) {
+      final spot = data.scatterSpots[i];
+      if (!spot.show || spot.isNull()) {
+        continue;
+      }
+      final x = getPixelX(spot.x, viewSize, holder);
+      final y = getPixelY(spot.y, viewSize, holder);
+      if (spot.xError == null && spot.yError == null) {
+        continue;
+      }
+
+      var left = 0.0;
+      var right = 0.0;
+      if (spot.xError != null) {
+        left = getPixelX(spot.x - spot.xError!.lowerBy, viewSize, holder) - x;
+        right = getPixelX(spot.x + spot.xError!.upperBy, viewSize, holder) - x;
+      }
+
+      var top = 0.0;
+      var bottom = 0.0;
+      if (spot.yError != null) {
+        top = getPixelY(spot.y + spot.yError!.lowerBy, viewSize, holder) - y;
+        bottom = getPixelY(spot.y - spot.yError!.upperBy, viewSize, holder) - y;
+      }
+      final relativeErrorPixelsRect = Rect.fromLTRB(
+        left,
+        top,
+        right,
+        bottom,
+      );
+
+      final painter = errorIndicatorData.painter(
+        ScatterChartSpotErrorRangeCallbackInput(
+          spot: spot,
+          spotIndex: i,
+        ),
+      );
+      canvasWrapper.drawErrorIndicator(
+        painter,
+        spot,
+        Offset(x, y),
+        relativeErrorPixelsRect,
+        holder.data,
+      );
+    }
+  }
+
+  @visibleForTesting
   void drawTouchTooltips(
     BuildContext context,
     CanvasWrapper canvasWrapper,
@@ -230,19 +307,27 @@ class ScatterChartPainter extends AxisChartPainter<ScatterChartData> {
     final width = drawingTextPainter.width;
     final height = drawingTextPainter.height;
 
-    /// if we have multiple bar lines,
-    /// there are more than one FlCandidate on touch area,
-    /// we should get the most top FlSpot Offset to draw the tooltip on top of it
-    final mostTopOffset = Offset(
+    final tooltipOriginPoint = Offset(
       getPixelX(showOnSpot.x, viewSize, holder),
       getPixelY(showOnSpot.y, viewSize, holder),
     );
+
+    // Get the dot size to create an extended boundary
+    final dotSize = showOnSpot.dotPainter.getSize(showOnSpot);
+    final dotRadius = dotSize.width / 2;
+    final viewRect = Offset.zero & viewSize;
+    final extendedBoundary = viewRect.inflate(dotRadius);
+
+    // Check if any part of the dot is within the extended boundary
+    if (!extendedBoundary.contains(tooltipOriginPoint)) {
+      return;
+    }
 
     final tooltipWidth = width + tooltipData.tooltipPadding.horizontal;
     final tooltipHeight = height + tooltipData.tooltipPadding.vertical;
 
     final tooltipLeftPosition = getTooltipLeft(
-      mostTopOffset.dx,
+      tooltipOriginPoint.dx,
       tooltipWidth,
       tooltipData.tooltipHorizontalAlignment,
       tooltipData.tooltipHorizontalOffset,
@@ -251,7 +336,7 @@ class ScatterChartPainter extends AxisChartPainter<ScatterChartData> {
     /// draw the background rect with rounded radius
     var rect = Rect.fromLTWH(
       tooltipLeftPosition,
-      mostTopOffset.dy -
+      tooltipOriginPoint.dy -
           tooltipHeight -
           (showOnSpot.size.height / 2) -
           tooltipItem.bottomMargin,
@@ -303,13 +388,12 @@ class ScatterChartPainter extends AxisChartPainter<ScatterChartData> {
       }
     }
 
-    final radius = Radius.circular(tooltipData.tooltipRoundedRadius);
     final roundedRect = RRect.fromRectAndCorners(
       rect,
-      topLeft: radius,
-      topRight: radius,
-      bottomLeft: radius,
-      bottomRight: radius,
+      topLeft: tooltipData.tooltipBorderRadius.topLeft,
+      topRight: tooltipData.tooltipBorderRadius.topRight,
+      bottomLeft: tooltipData.tooltipBorderRadius.bottomLeft,
+      bottomRight: tooltipData.tooltipBorderRadius.bottomRight,
     );
 
     _bgTouchTooltipPaint.color = tooltipData.getTooltipColor(showOnSpot);
@@ -336,11 +420,12 @@ class ScatterChartPainter extends AxisChartPainter<ScatterChartData> {
         ..strokeWidth = tooltipData.tooltipBorder.width;
     }
 
+    final reverseQuarterTurnsAngle = -holder.data.rotationQuarterTurns * 90;
     canvasWrapper.drawRotated(
       size: rect.size,
       rotationOffset: rectRotationOffset,
       drawOffset: rectDrawOffset,
-      angle: rotateAngle,
+      angle: reverseQuarterTurnsAngle + rotateAngle,
       drawCallback: () {
         canvasWrapper
           ..drawRRect(roundedRect, _bgTouchTooltipPaint)

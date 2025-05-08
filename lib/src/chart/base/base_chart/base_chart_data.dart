@@ -16,14 +16,10 @@ abstract class BaseChartData with EquatableMixin {
   /// [touchData] defines the touch behavior and responses.
   BaseChartData({
     FlBorderData? borderData,
-    required this.touchData,
   }) : borderData = borderData ?? FlBorderData();
 
   /// Holds data to drawing border around the chart.
-  FlBorderData borderData;
-
-  /// Holds data needed to touch behavior and responses.
-  FlTouchData touchData;
+  final FlBorderData borderData;
 
   BaseChartData lerp(BaseChartData a, BaseChartData b, double t);
 
@@ -31,7 +27,6 @@ abstract class BaseChartData with EquatableMixin {
   @override
   List<Object?> get props => [
         borderData,
-        touchData,
       ];
 }
 
@@ -45,30 +40,28 @@ class FlBorderData with EquatableMixin {
   })  : show = show ?? true,
         border = border ?? Border.all();
   final bool show;
-  Border border;
+  final Border border;
 
   /// returns false if all borders have 0 width or 0 opacity
   bool isVisible() => show && border.isVisible();
 
   /// Lerps a [FlBorderData] based on [t] value, check [Tween.lerp].
-  static FlBorderData lerp(FlBorderData a, FlBorderData b, double t) {
-    return FlBorderData(
-      show: b.show,
-      border: Border.lerp(a.border, b.border, t),
-    );
-  }
+  static FlBorderData lerp(FlBorderData a, FlBorderData b, double t) =>
+      FlBorderData(
+        show: b.show,
+        border: Border.lerp(a.border, b.border, t),
+      );
 
   /// Copies current [FlBorderData] to a new [FlBorderData],
   /// and replaces provided values.
   FlBorderData copyWith({
     bool? show,
     Border? border,
-  }) {
-    return FlBorderData(
-      show: show ?? this.show,
-      border: border ?? this.border,
-    );
-  }
+  }) =>
+      FlBorderData(
+        show: show ?? this.show,
+        border: border ?? this.border,
+      );
 
   /// Used for equality check, see [EquatableMixin].
   @override
@@ -160,14 +153,13 @@ class FlClipData with EquatableMixin {
     bool? bottom,
     bool? left,
     bool? right,
-  }) {
-    return FlClipData(
-      top: top ?? this.top,
-      bottom: bottom ?? this.bottom,
-      left: left ?? this.left,
-      right: right ?? this.right,
-    );
-  }
+  }) =>
+      FlClipData(
+        top: top ?? this.top,
+        bottom: bottom ?? this.bottom,
+        left: left ?? this.left,
+        right: right ?? this.right,
+      );
 
   /// Used for equality check, see [EquatableMixin].
   @override
@@ -190,7 +182,12 @@ typedef MouseCursorResolver<R extends BaseTouchResponse> = MouseCursor Function(
 
 /// This class holds the touch response details of charts.
 abstract class BaseTouchResponse {
-  const BaseTouchResponse();
+  BaseTouchResponse({
+    required this.touchLocation,
+  });
+
+  /// The location of the touch in pixels on the screen.
+  final Offset touchLocation;
 }
 
 /// Controls an element horizontal alignment to given point.

@@ -398,7 +398,10 @@ void main() {
           touchTooltipData: ScatterTouchTooltipData(
             rotateAngle: 18,
             getTooltipColor: (touchedSpot) => const Color(0xFF00FF00),
-            tooltipRoundedRadius: 85,
+            tooltipBorderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(85),
+              topRight: Radius.circular(8),
+            ),
             tooltipPadding: const EdgeInsets.all(12),
             getTooltipItems: (_) {
               return ScatterTooltipItem(
@@ -433,7 +436,7 @@ void main() {
       scatterChartPainter.drawTouchTooltip(
         mockBuildContext,
         mockCanvasWrapper,
-        (data.touchData as ScatterTouchData).touchTooltipData,
+        data.scatterTouchData.touchTooltipData,
         spot1,
         holder,
       );
@@ -462,8 +465,10 @@ void main() {
       final bgPaint = captured2[0][1] as Paint;
       final textPainter = captured2[1][0] as TextPainter;
 
-      expect(rRect.blRadiusX, 85);
+      expect(rRect.blRadiusX, 0);
+      expect(rRect.blRadiusY, 0);
       expect(rRect.tlRadiusY, 85);
+      expect(rRect.trRadiusX, 8);
 
       expect(bgPaint.color, const Color(0xFF00FF00));
       expect(
@@ -500,7 +505,7 @@ void main() {
           touchTooltipData: ScatterTouchTooltipData(
             rotateAngle: 18,
             getTooltipColor: (touchedSpot) => const Color(0xFFFFFF00),
-            tooltipRoundedRadius: 22,
+            tooltipBorderRadius: BorderRadius.circular(22),
             fitInsideHorizontally: false,
             fitInsideVertically: true,
             tooltipPadding: const EdgeInsets.all(12),
@@ -538,7 +543,7 @@ void main() {
       scatterChartPainter.drawTouchTooltip(
         mockBuildContext,
         mockCanvasWrapper,
-        (data.touchData as ScatterTouchData).touchTooltipData,
+        data.scatterTouchData.touchTooltipData,
         spot1,
         holder,
       );
@@ -607,7 +612,7 @@ void main() {
           touchTooltipData: ScatterTouchTooltipData(
             rotateAngle: 18,
             getTooltipColor: (touchedSpot) => const Color(0xFFFFFF00),
-            tooltipRoundedRadius: 22,
+            tooltipBorderRadius: BorderRadius.circular(22),
             fitInsideHorizontally: false,
             fitInsideVertically: true,
             tooltipPadding: const EdgeInsets.all(12),
@@ -645,7 +650,7 @@ void main() {
       scatterChartPainter.drawTouchTooltip(
         mockBuildContext,
         mockCanvasWrapper,
-        (data.touchData as ScatterTouchData).touchTooltipData,
+        data.scatterTouchData.touchTooltipData,
         spot1,
         holder,
       );

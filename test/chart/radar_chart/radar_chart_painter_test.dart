@@ -151,20 +151,29 @@ void main() {
       // Background circle
       expect(drawCircleResults[0]['offset'], const Offset(200, 150));
       expect(drawCircleResults[0]['radius'], 120);
-      expect(drawCircleResults[0]['paint_color'], MockData.color2);
+      expect(
+        drawCircleResults[0]['paint_color'],
+        isSameColorAs(MockData.color2),
+      );
       expect(drawCircleResults[0]['paint_style'], PaintingStyle.fill);
 
       // Border circle
       expect(drawCircleResults[1]['offset'], const Offset(200, 150));
       expect(drawCircleResults[1]['radius'], 120);
-      expect(drawCircleResults[1]['paint_color'], MockData.color6);
+      expect(
+        drawCircleResults[1]['paint_color'],
+        isSameColorAs(MockData.color6),
+      );
       expect(drawCircleResults[1]['paint_stroke'], 33);
       expect(drawCircleResults[1]['paint_style'], PaintingStyle.stroke);
 
       // First Tick
       expect(drawCircleResults[2]['offset'], const Offset(200, 150));
       expect(drawCircleResults[2]['radius'], 60);
-      expect(drawCircleResults[2]['paint_color'], MockData.color5);
+      expect(
+        drawCircleResults[2]['paint_color'],
+        isSameColorAs(MockData.color5),
+      );
       expect(drawCircleResults[2]['paint_stroke'], 55);
       expect(drawCircleResults[2]['paint_style'], PaintingStyle.stroke);
 
@@ -240,17 +249,26 @@ void main() {
       expect(drawPathResult.length, 3);
 
       // Background circle
-      expect(drawPathResult[0]['paint_color'], MockData.color2);
+      expect(
+        drawPathResult[0]['paint_color'],
+        isSameColorAs(MockData.color2),
+      );
       expect(drawPathResult[0]['paint_stroke'], 0);
       expect(drawPathResult[0]['paint_style'], PaintingStyle.fill);
 
       // Border circle
-      expect(drawPathResult[1]['paint_color'], MockData.color6);
+      expect(
+        drawPathResult[1]['paint_color'],
+        isSameColorAs(MockData.color6),
+      );
       expect(drawPathResult[1]['paint_stroke'], 33);
       expect(drawPathResult[1]['paint_style'], PaintingStyle.stroke);
 
       // First Tick
-      expect(drawPathResult[2]['paint_color'], MockData.color5);
+      expect(
+        drawPathResult[2]['paint_color'],
+        isSameColorAs(MockData.color5),
+      );
       expect(drawPathResult[2]['paint_stroke'], 55);
       expect(drawPathResult[2]['paint_style'], PaintingStyle.stroke);
 
@@ -327,7 +345,10 @@ void main() {
 
       expect(drawLineResults[0]['offset_from'], const Offset(200, 150));
       expect(drawLineResults[0]['offset_to'], const Offset(200, 30));
-      expect(drawLineResults[0]['paint_color'], MockData.color3);
+      expect(
+        drawLineResults[0]['paint_color'],
+        isSameColorAs(MockData.color3),
+      );
       expect(drawLineResults[0]['paint_style'], PaintingStyle.stroke);
       expect(drawLineResults[0]['paint_stroke'], 3);
 
@@ -336,7 +357,10 @@ void main() {
         drawLineResults[1]['offset_to'],
         const Offset(303.92304845413264, 209.99999999999997),
       );
-      expect(drawLineResults[1]['paint_color'], MockData.color3);
+      expect(
+        drawLineResults[1]['paint_color'],
+        isSameColorAs(MockData.color3),
+      );
       expect(drawLineResults[1]['paint_style'], PaintingStyle.stroke);
       expect(drawLineResults[1]['paint_stroke'], 3);
 
@@ -345,7 +369,10 @@ void main() {
         drawLineResults[2]['offset_to'],
         const Offset(96.07695154586739, 210.00000000000006),
       );
-      expect(drawLineResults[2]['paint_color'], MockData.color3);
+      expect(
+        drawLineResults[2]['paint_color'],
+        isSameColorAs(MockData.color3),
+      );
       expect(drawLineResults[2]['paint_style'], PaintingStyle.stroke);
       expect(drawLineResults[2]['paint_stroke'], 3);
     });
@@ -538,6 +565,17 @@ void main() {
             borderColor: MockData.color1,
             borderWidth: 1,
           ),
+          RadarDataSet(
+            dataEntries: [
+              const RadarEntry(value: 2),
+              const RadarEntry(value: 3),
+              const RadarEntry(value: 1),
+            ],
+            fillColor: MockData.color1,
+            fillGradient: MockData.gradient1,
+            borderColor: MockData.color1,
+            borderWidth: 1,
+          ),
         ],
         getTitle: (index, angle) {
           return RadarChartTitle(text: '$index$index', angle: angle);
@@ -579,13 +617,14 @@ void main() {
         drawPathResults.add({
           'path': inv.positionalArguments[0] as Path,
           'paint_color': (inv.positionalArguments[1] as Paint).color,
+          'paint_shader': (inv.positionalArguments[1] as Paint).shader,
           'paint_stroke': (inv.positionalArguments[1] as Paint).strokeWidth,
           'paint_style': (inv.positionalArguments[1] as Paint).style,
         });
       });
 
       radarChartPainter.drawDataSets(mockCanvasWrapper, holder);
-      expect(drawCircleResults.length, 9);
+      expect(drawCircleResults.length, 12);
 
       expect(
         drawCircleResults[0]['offset'] as Offset,
@@ -641,28 +680,54 @@ void main() {
       );
       expect(drawCircleResults[8]['radius'] as double, 5);
 
-      expect(drawPathResults.length, 6);
+      expect(drawPathResults.length, 8);
 
-      expect(drawPathResults[0]['paint_color'], MockData.color1);
+      expect(
+        drawPathResults[0]['paint_color'],
+        isSameColorAs(MockData.color1),
+      );
       expect(drawPathResults[0]['paint_style'], PaintingStyle.fill);
 
-      expect(drawPathResults[1]['paint_color'], MockData.color3);
+      expect(
+        drawPathResults[1]['paint_color'],
+        isSameColorAs(MockData.color3),
+      );
       expect(drawPathResults[1]['paint_stroke'], 3);
       expect(drawPathResults[1]['paint_style'], PaintingStyle.stroke);
 
-      expect(drawPathResults[2]['paint_color'], MockData.color2);
+      expect(
+        drawPathResults[2]['paint_color'],
+        isSameColorAs(MockData.color2),
+      );
       expect(drawPathResults[2]['paint_style'], PaintingStyle.fill);
 
-      expect(drawPathResults[3]['paint_color'], MockData.color2);
+      expect(
+        drawPathResults[3]['paint_color'],
+        isSameColorAs(MockData.color2),
+      );
       expect(drawPathResults[3]['paint_stroke'], 2);
       expect(drawPathResults[3]['paint_style'], PaintingStyle.stroke);
 
-      expect(drawPathResults[4]['paint_color'], MockData.color3);
+      expect(
+        drawPathResults[4]['paint_color'],
+        isSameColorAs(MockData.color3),
+      );
       expect(drawPathResults[4]['paint_style'], PaintingStyle.fill);
 
-      expect(drawPathResults[5]['paint_color'], MockData.color1);
+      expect(
+        drawPathResults[5]['paint_color'],
+        isSameColorAs(MockData.color1),
+      );
       expect(drawPathResults[5]['paint_stroke'], 1);
       expect(drawPathResults[5]['paint_style'], PaintingStyle.stroke);
+
+      expect(drawPathResults[6]['paint_shader'], isNotNull);
+      expect(drawPathResults[6]['paint_shader'], isA<Shader>());
+      expect(drawPathResults[6]['paint_style'], PaintingStyle.fill);
+
+      expect(drawPathResults[7]['paint_color'], isSameColorAs(MockData.color1));
+      expect(drawPathResults[7]['paint_stroke'], 1);
+      expect(drawPathResults[7]['paint_style'], PaintingStyle.stroke);
     });
   });
 

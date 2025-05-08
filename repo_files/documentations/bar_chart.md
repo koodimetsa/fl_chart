@@ -6,13 +6,13 @@ BarChart(
   BarChartData(
     // read about it in the BarChartData section
   ),
-  swapAnimationDuration: Duration(milliseconds: 150), // Optional
-  swapAnimationCurve: Curves.linear, // Optional
+  duration: Duration(milliseconds: 150), // Optional
+  curve: Curves.linear, // Optional
 );
 ```
 
 ### Implicit Animations
-When you change the chart's state, it animates to the new state internally (using [implicit animations](https://flutter.dev/docs/development/ui/animations/implicit-animations)). You can control the animation [duration](https://api.flutter.dev/flutter/dart-core/Duration-class.html) and [curve](https://api.flutter.dev/flutter/animation/Curves-class.html) using optional `swapAnimationDuration` and `swapAnimationCurve` properties, respectively.
+When you change the chart's state, it animates to the new state internally (using [implicit animations](https://flutter.dev/docs/development/ui/animations/implicit-animations)). You can control the animation [duration](https://api.flutter.dev/flutter/dart-core/Duration-class.html) and [curve](https://api.flutter.dev/flutter/animation/Curves-class.html) using optional `duration` and `curve` properties, respectively.
 
 ### BarChartData
 |PropName		|Description	|default value|
@@ -31,7 +31,8 @@ When you change the chart's state, it animates to the new state internally (usin
 |minY| gets minimum y of y axis, if null, value will be read from the input barGroups (But it is more performant if you provide them) | null|
 |baselineY| defines the baseline of y-axis | 0|
 |extraLinesData| allows extra horizontal lines to be drawn on the chart. Vertical lines are ignored when used with BarChartData, please see [#1149](https://github.com/imaNNeo/fl_chart/issues/1149), check [ExtraLinesData](base_chart.md#ExtraLinesData)|ExtraLinesData()|
-
+|rotationQuarterTurns|Rotates the chart 90 degrees (clockwise) in every quarter turns. This feature works like the [RotatedBox](https://api.flutter.dev/flutter/widgets/RotatedBox-class.html) widget. You can have horizontal BarChart by changing this value to |0|
+|errorIndicatorData|Holds data for representing an error indicator (you see the error indicators if you provide the `toYErrorRange` in the [BarChartRodData](#BarChartRodData))|[ErrorIndicatorData()](base_chart.md#FlErrorIndicatorData)|
 
 ### BarChartGroupData
 |PropName		|Description	|default value|
@@ -59,7 +60,7 @@ enum values {`start`, `end`, `center`, `spaceEvenly`, `spaceAround`, `spaceBetwe
 |borderSide|Determines the border stroke around of the bar, see [BorderSide](https://api.flutter.dev/flutter/painting/BorderSide-class.html). When `null`, it defaults to draw no stroke. |null|
 |backDrawRodData|if provided, draws a rod in the background of the line bar, check the [BackgroundBarChartRodData](#BackgroundBarChartRodData)|null|
 |rodStackItem|if you want to have stacked bar chart, provide a list of [BarChartRodStackItem](#BarChartRodStackItem), it will draw over your rod.|[]|
-
+|toYErrorRange|If you want to show an error range on the rod, provide [FlErrorRange](base_chart.md#FlErrorRange)|null|
 
 ### BackgroundBarChartRodData
 |PropName|Description|default value|
@@ -94,7 +95,7 @@ enum values {`start`, `end`, `center`, `spaceEvenly`, `spaceAround`, `spaceBetwe
  |PropName|Description|default value|
  |:-------|:----------|:------------|
  |tooltipBorder|border of the tooltip bubble|BorderSide.none|
- |tooltipRoundedRadius|background corner radius of the tooltip bubble|4|
+ |tooltipBorderRadius|background corner radius of the tooltip bubble|BorderRadius.circular(4)|
  |tooltipPadding|padding of the tooltip|EdgeInsets.symmetric(horizontal: 16, vertical: 8)|
  |tooltipMargin|margin between the tooltip and the touched spot|16|
  |tooltipHorizontalAlignment|horizontal alginment of tooltip relative to the bar|FLHorizontalAlignment.center|
@@ -119,6 +120,8 @@ enum values {`start`, `end`, `center`, `spaceEvenly`, `spaceAround`, `spaceBetwe
 ### BarTouchResponse
 |PropName|Description|default value|
 |:-------|:----------|:------------|
+|touchLocation|the location of the touch event in the device pixels coordinates|required|
+|touchChartCoordinate|the location of the touch event in the chart coordinates|required|
 |spot|a [BarTouchedSpot](#BarTouchedSpot) class to hold data about touched spot| null |
 
 ### BarTouchedSpot

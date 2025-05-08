@@ -28,6 +28,8 @@ void main() {
       data,
       targetData,
       textScaler,
+      null,
+      canBeScaled: false,
     );
 
     final mockPainter = MockScatterChartPainter();
@@ -79,9 +81,12 @@ void main() {
         });
         return MockData.scatterTouchedSpot;
       });
+      when(mockPainter.getChartCoordinateFromPixel(any, any, any))
+          .thenAnswer((_) => const Offset(10, 10));
       final touchResponse =
           renderScatterChart.getResponseAtLocation(MockData.offset1);
       expect(touchResponse.touchedSpot, MockData.scatterTouchedSpot);
+      expect(touchResponse.touchChartCoordinate, const Offset(10, 10));
       expect(results[0]['local_position'] as Offset, MockData.offset1);
       expect(results[0]['size'] as Size, mockSize);
       final paintHolder = results[0]['paint_holder'] as PaintHolder;
@@ -99,6 +104,43 @@ void main() {
       expect(renderScatterChart.data, targetData);
       expect(renderScatterChart.targetData, data);
       expect(renderScatterChart.textScaler, const TextScaler.linear(22));
+    });
+
+    test('passes chart virtual rect to paint holder', () {
+      final rect1 = Offset.zero & const Size(100, 100);
+      final renderScatterChart = RenderScatterChart(
+        mockBuildContext,
+        data,
+        targetData,
+        textScaler,
+        null,
+        canBeScaled: false,
+      );
+
+      expect(renderScatterChart.chartVirtualRect, isNull);
+      expect(renderScatterChart.paintHolder.chartVirtualRect, isNull);
+
+      renderScatterChart.chartVirtualRect = rect1;
+
+      expect(renderScatterChart.chartVirtualRect, rect1);
+      expect(renderScatterChart.paintHolder.chartVirtualRect, rect1);
+    });
+
+    test('uses canBeScaled', () {
+      final renderScatterChart = RenderScatterChart(
+        mockBuildContext,
+        data,
+        targetData,
+        textScaler,
+        null,
+        canBeScaled: false,
+      );
+
+      expect(renderScatterChart.canBeScaled, false);
+
+      renderScatterChart.canBeScaled = true;
+
+      expect(renderScatterChart.canBeScaled, true);
     });
   });
 }

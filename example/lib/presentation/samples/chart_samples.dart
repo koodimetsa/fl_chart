@@ -1,3 +1,4 @@
+import 'package:fl_chart_app/presentation/samples/candlestick/candlestick_chart_sample1.dart';
 import 'package:fl_chart_app/util/app_helper.dart';
 
 import 'bar/bar_chart_sample1.dart';
@@ -12,6 +13,8 @@ import 'chart_sample.dart';
 import 'line/line_chart_sample1.dart';
 import 'line/line_chart_sample10.dart';
 import 'line/line_chart_sample11.dart';
+import 'line/line_chart_sample12.dart';
+import 'line/line_chart_sample13.dart';
 import 'line/line_chart_sample2.dart';
 import 'line/line_chart_sample3.dart';
 import 'line/line_chart_sample4.dart';
@@ -41,6 +44,8 @@ class ChartSamples {
       LineChartSample(9, (context) => LineChartSample9()),
       LineChartSample(10, (context) => const LineChartSample10()),
       LineChartSample(11, (context) => const LineChartSample11()),
+      LineChartSample(12, (context) => const LineChartSample12()),
+      LineChartSample(13, (context) => const LineChartSample13()),
     ],
     ChartType.bar: [
       BarChartSample(1, (context) => BarChartSample1()),
@@ -64,5 +69,8 @@ class ChartSamples {
     ChartType.radar: [
       RadarChartSample(1, (context) => RadarChartSample1()),
     ],
+    ChartType.candlestick: [
+      CandlestickChartSample(1, (context) => const CandlestickChartSample1()),
+    ]
   };
 }
