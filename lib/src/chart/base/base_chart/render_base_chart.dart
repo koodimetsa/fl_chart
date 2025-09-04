@@ -139,9 +139,9 @@ abstract class RenderBaseChart<R extends BaseTouchResponse> extends RenderBox
     if (event is PointerDownEvent) {
       longPressGestureRecognizer.addPointer(event);
       tapGestureRecognizer.addPointer(event);
-      if (!canBeScaled) {
-        panGestureRecognizer.addPointer(event);
-      }
+      //if (!canBeScaled) {
+      panGestureRecognizer.addPointer(event);
+      //}
     } else if (event is PointerHoverEvent) {
       _notifyTouchEvent(FlPointerHoverEvent(event));
     }
