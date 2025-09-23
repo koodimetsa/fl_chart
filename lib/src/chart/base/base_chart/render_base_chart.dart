@@ -95,8 +95,9 @@ abstract class RenderBaseChart<R extends BaseTouchResponse> extends RenderBox
         _notifyTouchEvent(FlTapUpEvent(tapUpDetails));
       };
 
+//Koodimetsä: set duration to zero to make longPress win everytime
     longPressGestureRecognizer =
-        LongPressGestureRecognizer(duration: _longPressDuration);
+        LongPressGestureRecognizer(duration: Duration.zero);
     longPressGestureRecognizer
       ..onLongPressStart = (longPressStartDetails) {
         _notifyTouchEvent(FlLongPressStart(longPressStartDetails));
@@ -139,9 +140,11 @@ abstract class RenderBaseChart<R extends BaseTouchResponse> extends RenderBox
     if (event is PointerDownEvent) {
       longPressGestureRecognizer.addPointer(event);
       tapGestureRecognizer.addPointer(event);
-      //if (!canBeScaled) {
-      panGestureRecognizer.addPointer(event);
-      //}
+
+      //Koodimetsä: the if-statement was originally commented out
+      if (!canBeScaled) {
+        panGestureRecognizer.addPointer(event);
+      }
     } else if (event is PointerHoverEvent) {
       _notifyTouchEvent(FlPointerHoverEvent(event));
     }
