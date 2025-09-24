@@ -96,8 +96,9 @@ abstract class RenderBaseChart<R extends BaseTouchResponse> extends RenderBox
       };
 
 //Koodimetsä: set duration to zero to make longPress win everytime
+//DID NOT WORK
     longPressGestureRecognizer =
-        LongPressGestureRecognizer(duration: Duration.zero);
+        LongPressGestureRecognizer(duration: _longPressDuration);
     longPressGestureRecognizer
       ..onLongPressStart = (longPressStartDetails) {
         _notifyTouchEvent(FlLongPressStart(longPressStartDetails));
