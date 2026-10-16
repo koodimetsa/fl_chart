@@ -47,6 +47,28 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
 
   List<GroupBarsPosition>? _groupBarsPosition;
 
+  /// In bar charts [VerticalLine.x] is a bar group index, the line goes
+  /// through the group's center. A fraction is placed between the groups.
+  /// Lines outside the groups are not painted.
+  @override
+  double verticalLinePixelX(
+    VerticalLine line,
+    Size viewSize,
+    PaintHolder<BarChartData> holder,
+  ) {
+    final positions = _groupBarsPosition;
+    if (positions == null ||
+        positions.isEmpty ||
+        line.x < 0 ||
+        line.x > positions.length - 1) {
+      return -1;
+    }
+
+    final lower = positions[line.x.floor()].groupX;
+    final upper = positions[line.x.ceil()].groupX;
+    return lower + (upper - lower) * (line.x - line.x.floor());
+  }
+
   /// Paints [BarChartData] into the provided canvas.
   @override
   void paint(
@@ -91,6 +113,12 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         holder,
         usableSize,
       );
+      super.drawVerticalLines(
+        context,
+        canvasWrapper,
+        holder,
+        usableSize,
+      );
     }
 
     drawBars(canvasWrapper, _groupBarsPosition!, holder);
@@ -99,6 +127,12 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
 
     if (data.extraLinesData.extraLinesOnTop) {
       super.drawHorizontalLines(
+        context,
+        canvasWrapper,
+        holder,
+        usableSize,
+      );
+      super.drawVerticalLines(
         context,
         canvasWrapper,
         holder,

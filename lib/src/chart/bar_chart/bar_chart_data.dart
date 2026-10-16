@@ -31,8 +31,8 @@ class BarChartData extends AxisChartData with EquatableMixin {
   ///
   /// You can modify [barTouchData] to customize touch behaviors and responses.
   ///
-  /// Horizontal lines are drawn with [extraLinesData]. Vertical lines will not be painted if received.
-  /// Please see issue #1149 (https://github.com/imaNNeo/fl_chart/issues/1149) for vertical lines.
+  /// Lines are drawn with [extraLinesData]. A vertical line's x is a bar group
+  /// index, the line goes through the group's center.
   BarChartData({
     List<BarChartGroupData>? barGroups,
     double? groupsSpace,

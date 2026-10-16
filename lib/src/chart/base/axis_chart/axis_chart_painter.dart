@@ -351,6 +351,15 @@ abstract class AxisChartPainter<D extends AxisChartData>
     }
   }
 
+  /// Pixel x of a vertical extra line, see [BarChartPainter] for bar charts.
+  double verticalLinePixelX(
+    VerticalLine line,
+    Size viewSize,
+    PaintHolder<D> holder,
+  ) {
+    return getPixelX(line.x, viewSize, holder);
+  }
+
   void drawVerticalLines(
     BuildContext context,
     CanvasWrapper canvasWrapper,
@@ -358,8 +367,9 @@ abstract class AxisChartPainter<D extends AxisChartData>
     Size viewSize,
   ) {
     for (final line in holder.data.extraLinesData.verticalLines) {
-      final from = Offset(getPixelX(line.x, viewSize, holder), 0);
-      final to = Offset(getPixelX(line.x, viewSize, holder), viewSize.height);
+      final pixelX = verticalLinePixelX(line, viewSize, holder);
+      final from = Offset(pixelX, 0);
+      final to = Offset(pixelX, viewSize.height);
 
       final isLineOutsideOfChart = from.dx < 0 ||
           to.dx < 0 ||
